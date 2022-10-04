@@ -16,6 +16,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-imagemin": "^8.0.0",
     "gulp-newer": "^1.4.0",
+    "gulp-rsync": "0.0.9",
     "gulp-sass": "^5.1.0",
     "gulp-uglify-es": "^3.0.0",
     "parallel": "^1.2.0",

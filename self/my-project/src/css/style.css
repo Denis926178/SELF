@@ -166,12 +166,14 @@ a:hover {
 
 button {
   border: none;
+  cursor: pointer;
 }
 
 .container {
   max-width: 1170px;
   margin-left: auto;
   margin-right: auto;
+  padding: 0 1rem;
 }
 
 .header {
@@ -253,8 +255,10 @@ button {
   line-height: 3rem;
   padding: 0.9rem 2rem;
   border-radius: 1rem;
-  margin-right: 2.7rem;
   filter: drop-shadow(4px 4px 10px rgba(0, 0, 0, 0.2));
+}
+.main .main-content .manager .button:not(:last-child) {
+  margin-right: 2.7rem;
 }
 .main .main-content .manager .graph-go {
   background: #00a843;
@@ -398,4 +402,67 @@ input::-webkit-inner-spin-button {
   margin-left: -5rem;
   padding-left: -5rem;
   margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+@media screen and (max-width: 1170px) {
+  .container {
+    padding: 0 1rem;
+  }
+  .main-content {
+    flex-direction: column;
+  }
+  .graph {
+    margin-top: 2rem;
+  }
+  .parameter-item {
+    justify-content: center;
+  }
+  h2,
+h3 {
+    text-align: center;
+  }
+  .buttons {
+    display: block;
+    text-align: center;
+  }
+}
+@media screen and (max-width: 440px) {
+  .navigation {
+    flex-direction: column;
+    align-items: center;
+  }
+  .authentication {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .log-in {
+    margin-bottom: 2rem;
+    margin-left: 8rem;
+  }
+  .buttons {
+    display: flex;
+    flex-direction: column;
+  }
+  .button {
+    margin-top: 2rem;
+    margin-right: 0;
+    margin-left: 2.7rem;
+  }
+  .graph-reset {
+    margin-right: 2.7rem;
+  }
+  .parameter-item {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .parameter-item input {
+    margin-top: 2rem;
+  }
+  h4 {
+    text-align: center;
+  }
 }
