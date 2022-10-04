@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/main.js"></script>
+    <title></title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="navigation">
+                <div class="logo">
+                    главная
+                </div>
+                <div class="authentication">
+                    <div class="log-in">
+                        войти
+                    </div>
+                    <div class="regisration">
+                        регистрация
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="container">
+            <div class="main-content">
+                <div class="options">
+                    <h2>параметры</h2>
+                    <div class="parameter-graph">
+                        <div class="parameter-item period flex">
+                            <h4>Период</h4>
+                            <input type="number" id="rangenumber" min="0" max="100" value="70"
+                                oninput="range.value=value">
+                            <input type="range" value="70" min="0" max="100" id="range"
+                                oninput="rangenumber.value=value" />
+                        </div>
+                        <div class="parameter-item amplitude flex">
+                            <h4>Амплитуда</h4>
+                            <input type="number" id="rangenumber2" min="0" max="100" value="70"
+                                oninput="range2.value=value">
+                            <input type="range" value="70" min="0" max="100" id="range2"
+                                oninput="rangenumber2.value=value" />
+                        </div>
+                        <div class="parameter-item quantity flex">
+                            <h4>Количество</h4>
+                            <input type="number" id="rangenumber3" min="0" max="100" value="70"
+                                oninput="range3.value=value">
+                            <input type="range" value="70" min="0" max="100" id="range3"
+                                oninput="rangenumber3.value=value" />
+                        </div>
+                    </div>
+                    <div class="visual">
+                        <h3>Внешний вид</h3>
+                        <div class="parameter-item size flex">
+                            <h4>Размер</h4>
+                            <input type="number" id="rangenumber4" min="0" max="100" value="70"
+                                oninput="range4.value=value">
+                            <input type="range" value="70" min="0" max="100" id="range4"
+                                oninput="rangenumber4.value=value" />
+                        </div>
+                    </div>
+                    <div class="manager">
+                        <h3>Управление</h3>
+                        <button class="button graph-go">Запуск</button>
+                        <button class="button graph-stop">Стоп</button>
+                        <button class="button graph-reset">Сброс</button>
+                    </div>
+                </div>
+                <div class="graph">
+                    <h2>график</h2>
+                    <div class="img">
+                        sfd;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
