@@ -1,80 +1,144 @@
-function main() {
-    g = 9.81;
-    l0 = 4;
+const g = 9.81;
+var nu_start = Math.sqrt(g) / (2 * Math.PI * Math.sqrt(4));
+var T = document.getElementById("period");
+var delta_nu = 1 / T;
 
-    class Ball {
-        __init__(this, canv, x, y, r, l, i) {
-            this.context = this.canv.getContext("2d");
-            this.id = i;
-            this.x = x;
-            this.y = y;
-            this.r = r;
-            this.canv = canv;
-            this.canv.lineWidth = 7; 
-            this.canv.strokeStyle = "green"; 
-            this.canv.item = canv.arc(x, y, r, 0, 360, false);
-            this.play = false;
+class App {
+    constructor() {
+        this.canvas = document.getElementById("canvas");
+        this.context = this.canvas.getContext("2d");
 
-            this.l = l;
-            this.t = 0;
-        }
+        this.periodE1 = document.getElementById("period");
+        this.amplitudeE1 = document.getElementById("amplitude");
+        this.countE1 = document.getElementById("count");
+        this.sizeE1 = document.getElementById("_size");
+        this.interval = 30
+        this.run = false;
+        this.button = document.getElementById("go");
 
-        update(this) {
-            this.canv.after(30, this.update);
-            nu_start = sqrt(g) / (2 * pi * sqrt(l0));
-            delta_nu = 1 / period_s.getElementById(period);
-            this.l = g / ((4 * pi ** 2) * (nu_start + delta_nu * this.id) ** 2);
-            this.r = size_s.getElementById(size);
-            off = 700 / (count_s.getElementById(count) + 1);
-            this.x = off + this.r + this.id * off;
-            A = amplitude_s.getElementById(amplitude);
-            this.y = 250 - A * sin(this.t * sqrt(g / this.l) + pi / 2);
-            this.canv.coords(this.item, this.x + this.r, this.y + this.r, this.x - this.r, this.y - this.r);
-
-            if (this.play) {
-                this.t += 0.03;
+        this.button.addEventListener('click', () => {
+            if (this.run) {
+                clearInterval(this.timer);
             }
-        }
+            else if (this.validateData()) {
+                const data = this.getData();
+
+                if (this.Ball) {
+                    data.time = this.Ball.time;
+                }
+                this.Ball = new Ball(50, 50, data.size, data.period, data.amplitude);
+                console.log("1");
+                if (isFinite(data.time)) {
+                    this.Ball.time = data.time;
+                }
+                this.timer = setInterval(() => this.redraw(), this.interval);
+            }
+
+            this.run = !this.run;
+        });
     }
 
-    var balls = [];
-    for (let i = 0; i < 252; i++) {
-        off = 700 / (count_s.getElementById(count) + 1);
-        x0 = off + size_s.getElementById(size) + i * off;
-        A = amplitude_s.getElementById(amplitude);
-        r0 = size_s.getElementById(size);
-        length = g / ((4 * pi ** 2) * (nu_start + delta_nu * i) ** 2);
-        B = Ball(draw_c, x0, A, r0, length, i);
-        balls.push(B);
-        draw_c.after_idle(balls[i].update);
+    clear() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
-    function play() {
-        if (play_b['text'] === "Старт") {
-            play_b['text'] = "Стоп";
-            for (let i = 0; i < balls.length; i++) {
-                balls[i].play = true;
-            }
+    redraw() {
+        this.clear();
+        this.Ball.draw(this.context, this.interval);
+    }
+
+    getData() {
+        console.log("2");
+        const period = parseFloat(this.periodE1.value);
+        const amplitude = parseFloat(this.amplitudeE1.value);
+        const count = parseFloat(this.countE1.value);
+        const size = parseFloat(this.sizeE1.value);
+
+        if (isFinite(period) && isFinite(amplitude) && isFinite(count) && isFinite(size))
+            return {
+                period: period,
+                amplitude: amplitude,
+                count: count,
+                size: size
+            };
+        else
+            return null;
+    }
+
+    validateData() {
+        const data = this.getData();
+        console.log("3");
+        if (data === null) {
+            alert("Одно или несколько полей заполнены непраивльно или не заполнены совсем!");
+            return false;
         }
         else {
-            play_b['text'] = "Старт"
-            for (let i = 0; i < balls.length; i++) {
-                balls[i].play = false;
+            if (data.period < 1 || data.period > 100) {
+                alert("Период должен быть в пределах от 1 до 100!");
+                return false;
+            }
+            if (data.amplitude < 1 || data.amplitude > 100) {
+                alert("Амплитуда должна быть в пределах от 1 до 100!");
+                return false;
+            }
+            if (data.count < 1 || data.count > 100) {
+                alert("Количество должно быть в пределах от 1 до 100!");
+                return false;
+            }
+            if (data.size < 1 || data.size > 100) {
+                alert("Размер должен быть в пределах от 1 до 100!");
+                return false;
             }
         }
+        console.log(data.size);
+        return true;
+    }
+}
+
+class Ball {
+    constructor(x0, y0, size, period, amplitude) {
+        this.x = x0;
+        this.y = y0;
+        this.size = size;
+        this.time = 0;
+        this.period = period;
+        this.amplitude = amplitude;
     }
 
-    function stop() {
-        play_b['text'] = "Старт"
-        for (let i = 0; i < 252; i++) {
-            balls[i].play = false;
+    getTime() {
+        return this.time / 1000;
+    }
+
+    drawBall(context) {
+        console.log("Y:", this.y);
+        const gradient = context.createRadialGradient(this.x, this.y, this.size, this.x - 2, this.y - 4, 2);
+
+        gradient.addColorStop(0, '#333');
+        gradient.addColorStop(1, '#999');
+
+        context.fillStyle = gradient;
+        context.beginPath();
+        context.arc(this.x, this.y, this.size, 0, Math.PI * 2, true);
+        context.fill();
+    }
+
+    calcY() {
+        return this.amplitude * Math.sin(Math.PI / 2 + this.getTime() * this.period / (2 * Math.PI));
+    }
+
+    draw(context, interval) {
+        this.time += interval;
+        this.x = 100;
+
+        for (let i = 0; i < 3; i++) {
+            this.x += 100;
+            this.y = this.calcY();
+            console.log(this.x, this.y);
+            this.drawBall(context);
         }
-        balls[i].t = 0;
-        balls[i].y = 250 - A * sin(balls[i].t * sqrt(g / balls[i].l) + pi / 2);
-        balls[i].canv.coords(balls[i].item, balls[i].x + balls[i].r, balls[i].y + balls[i].r, balls[i].x - balls[i].r, balls[i].y - balls[i].r);
     }
+}
 
-
-    play_b['command'] = play;
-    stop_b['command'] = stop;
+window.onload = () => {
+    new App();
 }
