@@ -2,6 +2,7 @@
   font-family: "SF Pro Display";
   src: url(../fonts/SF-Pro-Display-Bold.ttf);
 }
+
 html,
 body,
 div,
@@ -272,6 +273,7 @@ button {
   color: #000000;
   background: #d9d9d9;
 }
+
 .main .main-content .graph {
   width: 100%;
 }
