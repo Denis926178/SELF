@@ -34,22 +34,22 @@
     <main class="main">
         <div class="container">
             <div class="main-content">
-                <div class="options">
+                <div id="id_options" class="options">
                     <h2>параметры</h2>
                     <div class="parameter-graph">
                         <div class="parameter-item period flex">
                             <h4>Длина маятника</h4>
-                            <input type="number" id="_length" min="0" max="100" value="70"
+                            <input type="number" id="_length" min="0" max="100" value="1"
                                 oninput="range_period.value=value">
-                            <input type="range" value="70" min="0" max="100" id="range_length"
+                            <input type="range" value="1" min="0" max="100" id="range_length"
                                 oninput="_length.value=value" />
                         </div>
                         <div class="parameter-item amplitude flex">
-                            <h4>Разность частот</h4>
-                            <input type="number" id="frequency" min="0" max="100" value="0.4"
-                                oninput="range_frequency.value=value">
-                            <input type="range" value="0.4" min="0" max="100" id="range_frequency"
-                                oninput="frequency.value=value" />
+                            <h4>Разность длин</h4>
+                            <input type="number" id="delta_length" min="0" max="100" value="0.1"
+                                oninput="range_delta_length.value=value">
+                            <input type="range" value="0.1" min="0" max="100" id="range_delta_length"
+                                oninput="delta_length.value=value" />
                         </div>
                         <div class="parameter-item amplitude flex">
                             <h4>Амплитуда</h4>
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="graph">
+                <div id="id_graph" class="graph">
                     <h2>график</h2>
                     <canvas class="img" id="canvas"></canvas>
                         

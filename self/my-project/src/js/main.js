@@ -10,13 +10,13 @@ class App {
         this.canvas.height = canvas.offsetHeight;
 
         this.lengthE1 = document.getElementById("_length");
-        this.frequencyE1 = document.getElementById("frequency");
+        this.frequencyE1 = document.getElementById("delta_length");
         this.amplitudeE1 = document.getElementById("amplitude");
         this.countE1 = document.getElementById("count");
         this.sizeE1 = document.getElementById("_size");
 
         this.range_lengthE1 = document.getElementById("range_length");
-        this.range_frequencyE1 = document.getElementById("range_frequency");
+        this.range_frequencyE1 = document.getElementById("range_delta_length");
         this.range_amplitudeE1 = document.getElementById("range_amplitude");
         this.range_countE1 = document.getElementById("range_count");
         this.range_sizeE1 = document.getElementById("range_size");
@@ -69,15 +69,15 @@ class App {
 
     getData() {
         const length = parseFloat(this.lengthE1.value);
-        const frequency = parseFloat(this.frequencyE1.value);
+        const delta_length = parseFloat(this.frequencyE1.value);
         const amplitude = parseFloat(this.amplitudeE1.value);
         const count = parseFloat(this.countE1.value);
         const size = parseFloat(this.sizeE1.value);
 
-        if (isFinite(length) && isFinite(frequency) && isFinite(amplitude) && isFinite(count) && isFinite(size))
+        if (isFinite(length) && isFinite(delta_length) && isFinite(amplitude) && isFinite(count) && isFinite(size))
             return {
                 length: length,
-                frequency: frequency,
+                delta_length: delta_length,
                 amplitude: amplitude,
                 count: count,
                 size: size
@@ -143,14 +143,14 @@ class App {
 }
 
 class Ball {
-    constructor(x0, y0, size, length, frequency, amplitude) {
+    constructor(x0, y0, size, length, delta_length, amplitude) {
         this.x = x0;
         this.y = y0;
         this.size = size;
         this.time = 0;
         this.length = length;
         this.amplitude = amplitude;
-        this.frequency = frequency;
+        this.delta_length = delta_length;
         this.count = parseFloat(document.getElementById("count").value);
         this.between_distance = parseFloat(document.getElementById("canvas").width) / (this.count + 1);
     }
@@ -176,19 +176,19 @@ class Ball {
     }
 
     draw(context, interval) {
-        this.time += interval / 300;
+        this.time += interval / 100;
         this.x = this.between_distance;
         
         const HEIGHT = parseFloat(document.getElementById("canvas").height) / 2;
         const LENGTH = parseFloat(document.getElementById("_length").value);
-        const FRECUENCY = parseFloat(document.getElementById("frequency").value);
+        const DELTA_LENGTH = parseFloat(document.getElementById("delta_length").value);
         const START_FREQUENCY = 1 / (Math.PI * 2 * Math.sqrt(LENGTH / g));
 
         console.log(START_FREQUENCY);
-        console.log(FRECUENCY);
+        console.log(DELTA_LENGTH);
 
         for (let i = 0; i < this.count; i++) {
-            this.length = Math.pow(2 * Math.PI * (i * FRECUENCY + START_FREQUENCY), 2) / g;
+            this.length = LENGTH + i * DELTA_LENGTH;
             this.y = HEIGHT + this.calcY();
             console.log(this.length);
             this.drawBall(context);
@@ -198,5 +198,10 @@ class Ball {
 }
 
 window.onload = () => {
+    var options = document.getElementById("id_options");
+    var options_height = options.offsetHeight;
+    console.log(options_height);
+    document.getElementById('id_graph').style.height = options_height + 'px';
+
     new App();
 }
