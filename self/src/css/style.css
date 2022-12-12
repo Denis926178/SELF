@@ -316,7 +316,7 @@ output {
 
 input[type=number] {
   width: 6rem;
-  padding: 0.5rem 2rem 0.5rem 0.7rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.7rem;
   border-radius: 3px;
   border: none;
   background: #e4e4e4;

@@ -5,7 +5,7 @@ class App {
         var flag = 0;
         this.canvas = document.getElementById("canvas");
         this.context = this.canvas.getContext("2d");
-
+        
         this.canvas.width = canvas.offsetWidth;
         this.canvas.height = canvas.offsetHeight;
 
@@ -25,6 +25,22 @@ class App {
         this.run = false;
         this.button_go = document.getElementById("go");
         this.button_stop = document.getElementById("stop");
+        this.button_reset = document.getElementById("reset")
+
+        this.draw_line();
+
+        this.button_reset.addEventListener('click', () => {
+            this.range_lengthE1.value = 1;
+            this.range_frequencyE1.value = 0.1;
+            this.range_amplitudeE1.value = 100;
+            this.range_countE1.value = 7;
+            this.range_sizeE1.value = 10;
+            this.lengthE1.value = 1;
+            this.frequencyE1.value = 0.1;
+            this.countE1.value = 7;
+            this.sizeE1.value = 10;
+            this.range_amplitudeE1.value = 100; 
+        });
 
         this.button_go.addEventListener('click', () => {
            if (!flag && this.validateData()) {
@@ -58,12 +74,33 @@ class App {
 
     }
 
+    draw_line()
+    {
+        this.canvas.width = canvas.offsetWidth;
+        this.canvas.height = canvas.offsetHeight;
+        this.context.beginPath();
+        this.context.setLineDash([5, 3]);
+        this.context.moveTo(0, this.canvas.height / 2);
+        this.context.lineTo(this.canvas.width, this.canvas.height / 2);
+        this.context.strokeStyle = "black";
+        this.context.lineWidth = "2";
+        this.context.stroke();
+        this.context.closePath();
+    }
+
     clear() {
+        this.canvas.width = canvas.offsetWidth;
+        this.canvas.height = canvas.offsetHeight;
+
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     redraw() {
+        this.canvas.width = canvas.offsetWidth;
+        this.canvas.height = canvas.offsetHeight;
+
         this.clear();
+        this.draw_line();
         this.Ball.draw(this.context, this.interval);
     }
 
@@ -152,7 +189,6 @@ class Ball {
         this.amplitude = amplitude;
         this.delta_length = delta_length;
         this.count = parseFloat(document.getElementById("count").value);
-        this.between_distance = parseFloat(document.getElementById("canvas").width) / (this.count + 1);
     }
 
     getTime() {
@@ -161,7 +197,7 @@ class Ball {
 
     drawBall(context) {
         const gradient = context.createRadialGradient(this.x, this.y, this.size, this.x - 2, this.y - 4, 2);
-
+        
         gradient.addColorStop(0, '#333');
         gradient.addColorStop(1, '#999');
 
@@ -177,20 +213,17 @@ class Ball {
 
     draw(context, interval) {
         this.time += interval / 100;
+        this.between_distance = document.getElementById("canvas").width / (this.count + 1);
         this.x = this.between_distance;
         
         const HEIGHT = parseFloat(document.getElementById("canvas").height) / 2;
         const LENGTH = parseFloat(document.getElementById("_length").value);
         const DELTA_LENGTH = parseFloat(document.getElementById("delta_length").value);
-        const START_FREQUENCY = 1 / (Math.PI * 2 * Math.sqrt(LENGTH / g));
-
-        console.log(START_FREQUENCY);
-        console.log(DELTA_LENGTH);
 
         for (let i = 0; i < this.count; i++) {
             this.length = LENGTH + i * DELTA_LENGTH;
             this.y = HEIGHT + this.calcY();
-            console.log(this.length);
+
             this.drawBall(context);
             this.x += this.between_distance;
         }
@@ -200,7 +233,7 @@ class Ball {
 window.onload = () => {
     var options = document.getElementById("id_options");
     var options_height = options.offsetHeight;
-    console.log(options_height);
+
     document.getElementById('id_graph').style.height = options_height + 'px';
 
     new App();
