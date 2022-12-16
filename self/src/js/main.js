@@ -5,7 +5,7 @@ class App {
         var flag = 0;
         this.canvas = document.getElementById("canvas");
         this.context = this.canvas.getContext("2d");
-        
+
         this.canvas.width = canvas.offsetWidth;
         this.canvas.height = canvas.offsetHeight;
 
@@ -39,30 +39,68 @@ class App {
             this.frequencyE1.value = 0.1;
             this.countE1.value = 7;
             this.sizeE1.value = 10;
-            this.range_amplitudeE1.value = 100; 
+            this.amplitudeE1.value = 100;
         });
 
-        this.button_go.addEventListener('click', () => {
-           if (!flag && this.validateData()) {
-                this.disableInputFields();
-                const data = this.getData();
+        [this.button_go, this.button_reset].forEach(element => {
+            clearInterval(this.timer);
+            element.addEventListener("click", event => {
+                clearInterval(this.timer);
+                if (!flag && this.validateData()) {
+                    const data = this.getData();
+ 
+                    if (this.Ball) {
+                        data.time = this.Ball.time;
+                    }
 
-                if (this.Ball) {
-                    data.time = this.Ball.time;
-                }
-                this.Ball = new Ball(50, 50, data.size, data.length, data.frequecy, data.amplitude);
-                
-                if (isFinite(data.time)) {
-                    this.Ball.time = data.time;
-                }
-
-                this.timer = setInterval(() => this.redraw(), this.interval);
-            }
-
-            this.run = 1;
-            flag = 1;
-        });
+                    this.Ball = new Ball(50, 50, data.size, data.length, data.frequecy, data.amplitude);
     
+                    if (isFinite(data.time)) {
+                        this.Ball.time = data.time;
+                    }
+
+                    this.timer = setInterval(() => this.redraw(), this.interval);
+                }
+    
+                this.run = 1;
+                flag = 0;
+            });
+        });
+
+        [this.countE1, 
+            this.sizeE1, 
+            this.lengthE1, 
+            this.frequencyE1, 
+            this.amplitudeE1, 
+            this.range_amplitudeE1, 
+            this.range_countE1, 
+            this.range_frequencyE1, 
+            this.range_lengthE1,
+            this.range_sizeE1
+            ].forEach(element => {
+            clearInterval(this.timer);
+            element.addEventListener("change", event => {
+                clearInterval(this.timer);
+                if (!flag && this.validateData()) {
+                    const data = this.getData();
+                    if (this.Ball) {
+                        data.time = this.Ball.time;
+                    }
+
+                    this.Ball = new Ball(50, 50, data.size, data.length, data.frequecy, data.amplitude);
+    
+                    if (isFinite(data.time)) {
+                        this.Ball.time = data.time;
+                    }
+
+                    this.timer = setInterval(() => this.redraw(), this.interval);
+                }
+    
+                this.run = 1;
+                flag = 0;
+            });
+        });
+
         this.button_stop.addEventListener('click', () => {
             if (this.run) {
                 this.enableInputFields();
@@ -74,8 +112,7 @@ class App {
 
     }
 
-    draw_line()
-    {
+    draw_line() {
         this.canvas.width = canvas.offsetWidth;
         this.canvas.height = canvas.offsetHeight;
         this.context.beginPath();
@@ -130,12 +167,16 @@ class App {
             return false;
         }
         else {
-            if (data.length < 1 || data.length > 100) {
-                alert("Период должен быть в пределах от 1 до 100!");
+            if (data.length < 0.1 || data.length > 10) {
+                alert("Длина должена быть в пределах от 0.1 до 10!");
                 return false;
             }
-            if (data.amplitude < 1 || data.amplitude > 100) {
-                alert("Амплитуда должна быть в пределах от 1 до 100!");
+            if (data.frequecy < 0.1 || data.frequecy > 1) {
+                alert("Длина должена быть в пределах от 0.01 до 1!");
+                return false;
+            }
+            if (data.amplitude < 1 || data.amplitude > 200) {
+                alert("Амплитуда должна быть в пределах от 1 до 200!");
                 return false;
             }
             if (data.count < 1 || data.count > 100) {
@@ -197,7 +238,7 @@ class Ball {
 
     drawBall(context) {
         const gradient = context.createRadialGradient(this.x, this.y, this.size, this.x - 2, this.y - 4, 2);
-        
+
         gradient.addColorStop(0, '#333');
         gradient.addColorStop(1, '#999');
 
@@ -215,7 +256,7 @@ class Ball {
         this.time += interval / 100;
         this.between_distance = document.getElementById("canvas").width / (this.count + 1);
         this.x = this.between_distance;
-        
+
         const HEIGHT = parseFloat(document.getElementById("canvas").height) / 2;
         const LENGTH = parseFloat(document.getElementById("_length").value);
         const DELTA_LENGTH = parseFloat(document.getElementById("delta_length").value);
